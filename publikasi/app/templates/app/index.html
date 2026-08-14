@@ -1,0 +1,498 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<style>
+    /* 1. CONTAINER PENCARIAN (GELAP SLATE & NAVY) */
+    .hero-banner-dark {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* 2. CARD PROFIL & GRAFIK */
+    .card-dark-theme {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* DEKORASI LINGKARAN */
+    .circle-deco { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); pointer-events: none; }
+    .c1 { width: 200px; height: 200px; top: -50px; right: -50px; }
+    .c2 { width: 100px; height: 100px; bottom: 20px; right: 80px; }
+
+    /* INPUT FORM TRANSPARAN */
+    .form-select-dark { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; backdrop-filter: blur(5px); }
+    .form-select-dark:focus { background-color: rgba(255, 255, 255, 0.2); border-color: #3b82f6; color: white; box-shadow: none; }
+    .form-select-dark option { color: #333; background: white; }
+    
+    /* POPUP STYLE */
+    div:where(.swal2-container) { font-family: 'Poppins', sans-serif !important; }
+    div:where(.swal2-popup) { border-radius: 20px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important; padding: 2em !important; }
+    div:where(.swal2-title) { font-weight: 700 !important; color: #1e293b !important; }
+    div:where(.swal2-actions) button { border-radius: 12px !important; font-weight: 600 !important; padding: 12px 24px !important; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
+    div:where(.swal2-actions) button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="d-flex justify-content-end mb-3 gap-2">
+    <button id="btnUpdateAll" class="btn btn-primary fw-bold shadow-sm" onclick="runUpdateAll()">
+        <i class="fa-solid fa-cloud-arrow-down me-2"></i> Update All Data
+    </button>
+    <button id="btnDownloadAll" class="btn btn-warning fw-bold shadow-sm text-white" onclick="runDownloadAll()">
+        <i class="fa-solid fa-file-zipper me-2"></i> Download ZIP
+    </button>
+</div>
+
+<div class="card hero-banner-dark border-0">
+    <div class="circle-deco c1"></div>
+    <div class="circle-deco c2"></div>
+    <div class="row align-items-center position-relative z-1">
+        <div class="col-lg-12">
+            <div class="d-flex align-items-center mb-4">
+                <span class="badge bg-white bg-opacity-10 border border-white border-opacity-25 text-white p-2 rounded-circle me-3">
+                    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                </span>
+                <div>
+                    <h2 class="fw-bold m-0">Cari Data Dosen</h2>
+                    <p class="text-white-50 m-0 small">Pilih nama dosen untuk melihat profil lengkap.</p>
+                </div>
+            </div>
+            <form method="get" class="row g-3 align-items-end" onsubmit="showLoading()">
+                <div class="col-md-9">
+                    <label class="form-label text-white-50 fw-bold small text-uppercase">NAMA DOSEN</label>
+                    <select name="id" class="form-select form-select-lg form-select-dark" required>
+                        <option value="" class="text-dark">-- Pilih Dosen dari Daftar --</option>
+                        {% for d in dosen_list %}
+                            <option value="{{ d.id }}" {% if d.id == selected_id %}selected{% endif %}>{{ d.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-lg" style="background-color: #3b82f6; border: none;">
+                        Tampilkan <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if profile.nama %}
+<div class="row g-4 animate-up">
+    
+    <div class="col-lg-4">
+        <div class="card card-dark-theme border-0 shadow h-100 overflow-hidden text-center">
+            <div class="circle-deco c1" style="top: -80px; left: -80px;"></div>
+            <div class="card-header bg-transparent border-0 pt-5 pb-0 position-relative z-1">
+                {% if profile.foto_url %}
+                    <img src="{{ profile.foto_url }}" class="rounded-circle shadow p-1 bg-white bg-opacity-10" style="width:140px; height:140px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-white bg-opacity-10 d-flex align-items-center justify-content-center mx-auto text-white fw-bold border border-white border-opacity-25" style="width:140px; height:140px; font-size:3rem;">{{ profile.nama|slice:":1" }}</div>
+                {% endif %}
+            </div>
+            <div class="card-body pt-3 position-relative z-1">
+                <h4 class="fw-bold text-white mb-1">{{ profile.nama }}</h4>
+                <p class="text-white-50 small mb-3">{{ profile.afiliasi }}</p>
+                <hr class="mx-5 opacity-25 border-white">
+                <div class="text-start px-3 small">
+                    <p class="mb-2"><i class="fa-solid fa-envelope me-2 text-info"></i> <span class="text-white-50">{{ profile.email|default:"-" }}</span></p>
+                    <p class="mb-0"><i class="fa-solid fa-lightbulb me-2 text-warning"></i> <span class="text-white-50">{{ profile.bidang_minat|default:"-" }}</span></p>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 p-4 position-relative z-1">
+                 <div class="d-grid mb-2">
+                     <button onclick="downloadExcelSingle('{{ selected_id }}')" class="btn btn-success fw-bold py-2 shadow-sm">
+                        <i class="fa-solid fa-file-excel me-2"></i> Download Excel
+                     </button>
+                 </div>
+                 <div class="d-grid">
+                     <button onclick="updateDataSingle('{{ selected_id }}')" class="btn btn-outline-light fw-bold py-2 shadow-sm">
+                        <i class="fa-solid fa-rotate me-2"></i> Update Data
+                     </button>
+                 </div>
+                 <div class="text-center mt-2"><small class="text-white-50" style="font-size: 0.7rem;">*Gunakan update jika ada data baru.</small></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card card-dark-theme border-0 shadow h-100">
+            <div class="card-header bg-transparent border-0 py-3 px-4">
+                <h6 class="m-0 fw-bold text-white"><i class="fa-solid fa-chart-column me-2 text-primary"></i>Statistik Sitasi</h6>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div style="position: relative; height: 350px; width: 100%;">
+                    <canvas id="citationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card border-0 shadow rounded-4 mt-2">
+            <div class="card-header bg-white border-0 py-3 px-4"><h6 class="m-0 fw-bold"><i class="fa-solid fa-list-check me-2 text-primary"></i>Daftar Publikasi Terbaru</h6></div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-secondary">
+                            <tr><th class="ps-4 py-3">Judul Artikel</th><th>Penulis</th><th class="text-center">Tahun</th><th class="text-center">Sitasi</th><th class="pe-4">Jurnal</th></tr>
+                        </thead>
+                        <tbody>
+                            {% if publications %}
+                                {% for pub in publications %}
+                                <tr>
+                                    <td class="ps-4 fw-semibold">
+                                        {% if pub.link_jurnal %}
+                                            <a href="{{ pub.link_jurnal }}" target="_blank" class="text-decoration-none text-dark hover-primary">{{ pub.judul }}</a>
+                                        {% else %}
+                                            {{ pub.judul }}
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <td class="small text-muted">{{ pub.authors }}</td>
+                                    
+                                    <td class="text-center">{{ pub.tahun }}</td>
+                                    
+                                    <td class="text-center">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle rounded-pill px-3">{{ pub.jumlah_sitasi }}</span>
+                                    </td>
+                                    
+                                    <td class="pe-4 small fst-italic">{{ pub.nama_jurnal }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="5" class="text-center py-5 text-muted">Tidak ada data publikasi ditemukan.</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% elif selected_id %}
+<div class="alert alert-warning shadow-sm mt-4 border-0 p-4"><h5 class="fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Data Belum Muncul</h5><p>Coba muat ulang.</p></div>
+{% endif %}
+
+<script>
+    const colorPrimary = '#3b82f6';
+    const colorDanger = '#ef4444';
+    const colorSuccess = '#10b981';
+    const colorWarning = '#f59e0b';
+
+    // ==========================================
+    // 0. FUNGSI LOADING PENCARIAN
+    // ==========================================
+    function showLoading() {
+        Swal.fire({
+            title: 'Memuat Profil...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+    }
+
+    // ==========================================
+    // 1. FUNGSI SATUAN (SINGLE DOSEN)
+    // ==========================================
+
+    function downloadExcelSingle(id) {
+        let timerInterval;
+        Swal.fire({
+            title: 'Menyiapkan Excel',
+            html: `
+                <div class="mb-3 text-muted small">Menarik data dari database...</div>
+                <div class="progress shadow-sm" style="height: 20px; border-radius: 10px;">
+                    <div id="swal-progress-excel" class="progress-bar progress-bar-striped progress-bar-animated bg-success fw-bold" style="width: 0%;">0%</div>
+                </div>
+            `,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                const progressBar = document.getElementById('swal-progress-excel');
+                let percent = 0;
+                
+                timerInterval = setInterval(() => {
+                    percent += 15;
+                    if (percent > 90) percent = 90; 
+                    progressBar.style.width = percent + '%';
+                    progressBar.innerHTML = percent + '%';
+                }, 200);
+
+                window.location.href = `?id=${id}&export=excel`;
+
+                setTimeout(() => {
+                    clearInterval(timerInterval);
+                    progressBar.style.width = '100%';
+                    progressBar.innerHTML = '100%';
+                    setTimeout(() => {
+                        Swal.fire({ title: 'Berhasil Diunduh!', text: 'File Excel sudah tersimpan.', icon: 'success', timer: 2000, showConfirmButton: false });
+                    }, 500);
+                }, 2000);
+            },
+            willClose: () => clearInterval(timerInterval)
+        });
+    }
+
+    function updateDataSingle(id) {
+        Swal.fire({
+            title: 'Update Data Dosen?',
+            text: "Sistem akan mengambil data terbaru dari Google Scholar (Memakan 1 Kuota API).",
+            icon: 'question', showCancelButton: true, confirmButtonColor: colorPrimary, cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Ya, Update', cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let timerInterval;
+                Swal.fire({
+                    title: 'Mengupdate Data...',
+                    html: `
+                        <div class="mb-3 text-muted small">Menghubungi server Scholar...</div>
+                        <div class="progress shadow-sm" style="height: 20px; border-radius: 10px;">
+                            <div id="swal-progress-update" class="progress-bar progress-bar-striped progress-bar-animated bg-primary fw-bold" style="width: 0%;">0%</div>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const progressBar = document.getElementById('swal-progress-update');
+                        let percent = 0;
+                        
+                        timerInterval = setInterval(() => {
+                            percent += 5; 
+                            if (percent > 95) percent = 95; 
+                            progressBar.style.width = percent + '%';
+                            progressBar.innerHTML = percent + '%';
+                        }, 300);
+
+                        window.location.href = `?id=${id}&sync=true`;
+                    },
+                    willClose: () => clearInterval(timerInterval)
+                });
+            }
+        });
+    }
+
+    // ==========================================
+    // 2. FUNGSI MASSAL (SEMUA DOSEN) - DENGAN CANCEL
+    // ==========================================
+
+    let globalController = null;
+    let globalZipController = null;
+
+    function runDownloadAll() {
+        Swal.fire({
+            title: 'Download Semua Data?',
+            html: "Anda akan mengunduh arsip <b>.ZIP</b> berisi data seluruh dosen.",
+            icon: 'warning', showCancelButton: true, confirmButtonColor: colorWarning, cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Download ZIP', cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let timerInterval;
+                globalZipController = new AbortController(); 
+                const signal = globalZipController.signal;
+
+                Swal.fire({
+                    title: 'Sedang Mengompres...',
+                    html: `
+                        <div class="mb-3 text-muted small">Mempersiapkan file ZIP dari server...</div>
+                        <div class="progress shadow-sm mb-3" style="height: 20px; border-radius: 10px;">
+                            <div id="swal-progress-zip" class="progress-bar progress-bar-striped progress-bar-animated bg-warning text-dark fw-bold" style="width: 0%;">0%</div>
+                        </div>
+                        <button id="btnCancelZip" class="btn btn-secondary btn-sm fw-bold px-4 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-xmark me-1"></i> Batalkan Proses
+                        </button>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const progressBar = document.getElementById('swal-progress-zip');
+                        const btnCancel = document.getElementById('btnCancelZip');
+                        let percent = 0;
+                        
+                        btnCancel.onclick = () => {
+                            if (globalZipController) {
+                                globalZipController.abort();
+                            }
+                            clearInterval(timerInterval);
+                            Swal.fire({ title: 'Dibatalkan!', text: 'Proses download ZIP berhasil dihentikan.', icon: 'info', timer: 1500, showConfirmButton: false });
+                        };
+
+                        timerInterval = setInterval(() => {
+                            percent += 5;
+                            if (percent > 90) percent = 90;
+                            progressBar.style.width = percent + '%';
+                            progressBar.innerHTML = percent + '%';
+                        }, 500);
+
+                        fetch("{% url 'download_all' %}", { signal: signal })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network error');
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            clearInterval(timerInterval);
+                            progressBar.style.width = '100%';
+                            progressBar.innerHTML = '100%';
+                            
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.style.display = 'none';
+                            a.href = url;
+                            a.download = 'Semua_Data_Dosen.zip';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+
+                            setTimeout(() => {
+                                Swal.fire({ title: 'Selesai!', text: 'File ZIP berhasil diunduh.', icon: 'success', timer: 2000, showConfirmButton: false });
+                            }, 500);
+                        })
+                        .catch(err => {
+                            clearInterval(timerInterval);
+                            if (err.name === 'AbortError') {
+                                console.log('Download ZIP diputus oleh pengguna.');
+                            } else {
+                                Swal.fire('Gagal!', 'Terjadi kesalahan saat memproses file ZIP.', 'error');
+                            }
+                        });
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
+            }
+        });
+    }
+
+    function runUpdateAll() {
+        Swal.fire({
+            title: 'PERINGATAN KUOTA!',
+            html: `<div class="text-start bg-danger-subtle p-3 rounded border border-danger"><p class="mb-2 fw-bold text-danger">⚠️ Update 65 Dosen sekaligus.</p><ul class="mb-0 small text-danger"><li>Memakan <b>65 Poin Kuota API</b>.</li><li>Proses butuh waktu <b>3-5 Menit</b>.</li></ul></div>`,
+            icon: 'error', showCancelButton: true, confirmButtonColor: colorDanger, cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Ya, Lanjut!', cancelButtonText: 'Batalkan'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let timerInterval;
+                globalController = new AbortController();
+                const signal = globalController.signal;
+
+                Swal.fire({
+                    title: 'Update Massal Dimulai...',
+                    html: `
+                        <div class="mb-3 text-muted small">Jangan tutup halaman. Memproses data...</div>
+                        <div class="progress shadow-sm mb-3" style="height: 20px; border-radius: 10px;">
+                            <div id="swal-progress-all" class="progress-bar progress-bar-striped progress-bar-animated bg-danger fw-bold" style="width: 0%;">0%</div>
+                        </div>
+                        <button id="btnCancelUpdate" class="btn btn-secondary btn-sm fw-bold px-4 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-xmark me-1"></i> Batalkan Proses
+                        </button>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        const progressBar = document.getElementById('swal-progress-all');
+                        const btnCancel = document.getElementById('btnCancelUpdate');
+                        let percent = 0;
+                        
+                        btnCancel.onclick = () => {
+                            if (globalController) {
+                                globalController.abort();
+                            }
+                            clearInterval(timerInterval);
+                            
+                            fetch("{% url 'cancel_update' %}");
+                            
+                            Swal.fire({ title: 'Proses Dihentikan', text: 'Update massal dibatalkan.', icon: 'warning', timer: 1500, showConfirmButton: false });
+                        };
+
+                        timerInterval = setInterval(() => {
+                            percent += 1;
+                            if (percent > 99) percent = 99; 
+                            progressBar.style.width = percent + '%';
+                            progressBar.innerHTML = percent + '%';
+                        }, 2000); 
+
+                        fetch("{% url 'update_all' %}", { signal: signal })
+                        .then(response => response.json())
+                        .then(data => {
+                            clearInterval(timerInterval);
+                            progressBar.style.width = '100%';
+                            progressBar.innerHTML = '100%';
+                            setTimeout(() => {
+                                Swal.fire({ title: 'Update Selesai!', text: data.message, icon: 'success' }).then(() => location.reload());
+                            }, 500);
+                        })
+                        .catch(err => {
+                            clearInterval(timerInterval);
+                            if (err.name === 'AbortError') {
+                                console.log('Update massal dibatalkan user.');
+                            } else {
+                                Swal.fire('Gagal!', 'Terjadi kesalahan saat update massal.', 'error');
+                            }
+                        });
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
+            }
+        });
+    }
+
+    // Chart Script (Sama, karena data JSON dikirim dari View)
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById('citationChart');
+        if (canvas) {
+            const labelsRaw = '{{ labels_json|safe }}';
+            const valuesRaw = '{{ values_json|safe }}';
+            if (!labelsRaw || labelsRaw === '[]') return;
+
+            const ctx = canvas.getContext('2d');
+            const labels = JSON.parse(labelsRaw);
+            const values = JSON.parse(valuesRaw);
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, '#4F46E5'); 
+            gradient.addColorStop(1, '#7C3AED'); 
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Sitasi', data: values, backgroundColor: gradient,
+                        borderColor: 'transparent', borderWidth: 0, borderRadius: 6, barPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255, 255, 255, 0.1)', borderDash: [5, 5] } },
+                        x: { ticks: { color: '#cbd5e1' }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    .hover-primary:hover { color: #0d6efd !important; text-decoration: underline !important; }
+    .animate-up { animation: fadeInUp 0.5s ease-out forwards; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+{% endblock %}

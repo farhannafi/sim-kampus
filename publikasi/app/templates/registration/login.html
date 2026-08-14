@@ -1,0 +1,114 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+<style>
+    /* 1. BACKGROUND HALAMAN (TETAP GELAP SINKRON) */
+    body {
+        background-color: #0f172a !important;
+        background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+    }
+
+    /* 2. CONTAINER PAS DI TENGAH */
+    .login-container {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 3. KARTU LOGIN (SAYA KEMBALIKAN KE WARNA SEBELUMNYA - GRADASI) */
+    .card-login {
+        /* INI KUNCI PERUBAHANNYA: */
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Border lebih terang dikit biar tegas */
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        width: 100%;
+        max-width: 400px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* INPUT FORM */
+    .form-control-dark {
+        background: rgba(255, 255, 255, 0.05); /* Transparan dikit biar nyatu */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px 15px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+    }
+    .form-control-dark:focus {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: #3b82f6;
+        box-shadow: none;
+    }
+    .form-control-dark::placeholder { color: #94a3b8; }
+
+    /* TOMBOL MASUK */
+    .btn-login {
+        background: #3b82f6;
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        border-radius: 10px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+    .btn-login:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    /* DEKORASI */
+    .circle-deco { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.03); pointer-events: none; }
+</style>
+
+<div class="login-container">
+    <div class="card card-login p-4">
+        
+        <div class="circle-deco" style="width: 200px; height: 200px; top: -80px; right: -50px;"></div>
+        <div class="circle-deco" style="width: 150px; height: 150px; bottom: -30px; left: -30px;"></div>
+
+        <div class="text-center mb-4 position-relative z-1">
+            <div class="bg-white bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                <i class="fa-solid fa-user-lock fa-2x text-white"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Login Admin</h3>
+            <p class="text-white-50 small">Silakan masuk untuk mengelola data.</p>
+        </div>
+
+        <form method="post" class="position-relative z-1">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger py-2 small border-0 bg-danger bg-opacity-25 text-white mb-3 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation"></i> Username atau Password salah.
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label class="small fw-bold text-white-50 mb-1">USERNAME</label>
+                <input type="text" name="username" class="form-control form-control-dark" placeholder="Masukkan username..." required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label class="small fw-bold text-white-50 mb-1">PASSWORD</label>
+                <input type="password" name="password" class="form-control form-control-dark" placeholder="Masukkan password..." required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login">
+                MASUK <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+            </button>
+        </form>
+        
+        <div class="text-center mt-4 position-relative z-1">
+            <small class="text-white-50" style="font-size: 0.75rem;">Sistem Monitoring Publikasi &copy; 2026</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- <h3 class="mb-4 fw-bold">⚙️ Kelola Data Dosen</h3> -->
+     <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold m-0">⚙️ Kelola Data Dosen</h3>
+    <div class="badge bg-dark text-white fs-6 p-2 shadow-sm border border-secondary">
+        ⚡ Sisa Kuota API: <span class="text-warning">{{ sisa_kuota }}</span>
+    </div>
+</div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fa-solid fa-plus me-2"></i>Tambah Dosen</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nama Lengkap</label>
+                            {{ form.nama }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">ID Google Scholar</label>
+                            {{ form.author_id }}
+                            <small class="text-muted">Contoh: <code>xYz123AAAAJ</code></small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fakultas</label>
+                            {{ form.fakultas }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">SIMPAN</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Daftar Dosen</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>Fakultas</th>
+                                <th>Nama Dosen</th>
+                                <th>ID Scholar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for dosen in list_dosen %}
+                            <tr>
+                                <td>
+                                    {% if dosen.fakultas == 'FEB' %}
+                                        <span class="badge bg-warning text-dark">FEB</span>
+                                    {% else %}
+                                        <span class="badge bg-info text-dark">FTD</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ dosen.nama }}</td>
+                                <td><code>{{ dosen.author_id }}</code></td>
+                                <td>
+                                    <a href="{% url 'edit_dosen' dosen.author_id %}" class="btn btn-warning btn-sm me-1">
+                                         <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="{% url 'hapus_dosen' dosen.author_id %}" 
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Hapus {{ dosen.nama }}?')">Hapus</a>
+                                         <i class="fa-solid fa-trash"></i>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center">Belum ada data.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

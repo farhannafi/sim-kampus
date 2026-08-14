@@ -1,0 +1,369 @@
+{
+    "search_metadata": {
+        "id": "6902fb1af8cc781a6e9f6c7d",
+        "status": "Success",
+        "json_endpoint": "https://serpapi.com/searches/755bffc0e750ce01/6902fb1af8cc781a6e9f6c7d.json",
+        "created_at": "2025-10-30 05:43:54 UTC",
+        "processed_at": "2025-10-30 05:43:54 UTC",
+        "google_scholar_author_url": "https://scholar.google.com/citations?user=3ZEzr0EAAAAJ&hl=id",
+        "raw_html_file": "https://serpapi.com/searches/755bffc0e750ce01/6902fb1af8cc781a6e9f6c7d.html",
+        "total_time_taken": 1.55
+    },
+    "search_parameters": {
+        "engine": "google_scholar_author",
+        "author_id": "3ZEzr0EAAAAJ",
+        "hl": "id"
+    },
+    "author": {
+        "name": "Handry Rochmad Dwi Happy",
+        "affiliations": "Dosen Prodi Desain Komunikasi Visual Institut Teknologi dan Bisnis Asia Malang",
+        "email": "Email yang diverifikasi di asia.ac.id",
+        "interests": [
+            {
+                "title": "Desain Komunikasi Visual",
+                "link": "https://scholar.google.com/citations?view_op=search_authors&hl=id&mauthors=label:desain_komunikasi_visual",
+                "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=id&mauthors=label%3Adesain_komunikasi_visual"
+            },
+            {
+                "title": "Fotografi",
+                "link": "https://scholar.google.com/citations?view_op=search_authors&hl=id&mauthors=label:fotografi",
+                "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=id&mauthors=label%3Afotografi"
+            },
+            {
+                "title": "Videografi",
+                "link": "https://scholar.google.com/citations?view_op=search_authors&hl=id&mauthors=label:videografi",
+                "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=id&mauthors=label%3Avideografi"
+            }
+        ],
+        "thumbnail": "https://scholar.googleusercontent.com/citations?view_op=view_photo&user=3ZEzr0EAAAAJ&citpid=2"
+    },
+    "articles": [
+        {
+            "title": "Can You See What I See, Mata Sebagai Objek Penciptaan Seni Fotografi Ekspresi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:u-x6o8ySG0sC",
+            "citation_id": "3ZEzr0EAAAAJ:u-x6o8ySG0sC",
+            "authors": "HRD Happy, EO Verdiana",
+            "publication": "Jurnal Kajian Seni 3 (2), 150, 2017",
+            "cited_by": {
+                "value": 12,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=16430299942839228670",
+                "serpapi_link": "https://serpapi.com/search.json?cites=16430299942839228670&engine=google_scholar&hl=id",
+                "cites_id": "16430299942839228670"
+            },
+            "year": "2017"
+        },
+        {
+            "title": "Representasi Nilai-nilai Religiusitas dalam Desain Ornamen Gong Senen Jepara",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:u5HHmVD_uO8C",
+            "citation_id": "3ZEzr0EAAAAJ:u5HHmVD_uO8C",
+            "authors": "AE Irsyada, HRD Happy",
+            "publication": "ANDHARUPA: Jurnal Desain Komunikasi Visual & Multimedia 7 (02), 282-297, 2021",
+            "cited_by": {
+                "value": 4,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=9185108336087347497",
+                "serpapi_link": "https://serpapi.com/search.json?cites=9185108336087347497&engine=google_scholar&hl=id",
+                "cites_id": "9185108336087347497"
+            },
+            "year": "2021"
+        },
+        {
+            "title": "Perancangan Film Dokumenter Motif Tenun Khas Jepara sebagai Media Edukasi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:UeHWp8X0CEIC",
+            "citation_id": "3ZEzr0EAAAAJ:UeHWp8X0CEIC",
+            "authors": "S Rauf, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 4 (2), 98-110, 2020",
+            "cited_by": {
+                "value": 3,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=17733944539756893144",
+                "serpapi_link": "https://serpapi.com/search.json?cites=17733944539756893144&engine=google_scholar&hl=id",
+                "cites_id": "17733944539756893144"
+            },
+            "year": "2020"
+        },
+        {
+            "title": "Brand Identity UD Bakriy Furniture Sebagai Upaya Meningkatkan Brand Awareness",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:_FxGoFyzp5QC",
+            "citation_id": "3ZEzr0EAAAAJ:_FxGoFyzp5QC",
+            "authors": "DD Saputra, YWS Warsaa, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 7 (02), 17-28, 2023",
+            "cited_by": {
+                "value": 2,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=16165672844419840835",
+                "serpapi_link": "https://serpapi.com/search.json?cites=16165672844419840835&engine=google_scholar&hl=id",
+                "cites_id": "16165672844419840835"
+            },
+            "year": "2023"
+        },
+        {
+            "title": "Synesthesia dan Pengalaman Seni Fotografi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:roLk4NBRz8UC",
+            "citation_id": "3ZEzr0EAAAAJ:roLk4NBRz8UC",
+            "authors": "MR Latuny, H Rochmad, D Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia (JESKOVSIA) 7 (01), 2023",
+            "cited_by": {
+                "value": 2,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=11672643565393864411",
+                "serpapi_link": "https://serpapi.com/search.json?cites=11672643565393864411&engine=google_scholar&hl=id",
+                "cites_id": "11672643565393864411"
+            },
+            "year": "2023"
+        },
+        {
+            "title": "Visualisasi “Nriman” sebagai Seni Ekspresi Visual dengan Teknik Fotografi Makro",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:Y0pCki6q_DkC",
+            "citation_id": "3ZEzr0EAAAAJ:Y0pCki6q_DkC",
+            "authors": "HRD Happy, EO Verdiana",
+            "publication": "Jurnal Desain Komunikasi Visual Nirmana 22 (2), 129-136, 2022",
+            "cited_by": {
+                "value": 2,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=7387004503556052125",
+                "serpapi_link": "https://serpapi.com/search.json?cites=7387004503556052125&engine=google_scholar&hl=id",
+                "cites_id": "7387004503556052125"
+            },
+            "year": "2022"
+        },
+        {
+            "title": "Perancangan Visual Identity Bedak Beras Rahayu Sebagai Media Promosi Di Pasar Tradisional Kota Malang",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:Tyk-4Ss8FVUC",
+            "citation_id": "3ZEzr0EAAAAJ:Tyk-4Ss8FVUC",
+            "authors": "WV Fatmala, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 4 (1), 49-63, 2020",
+            "cited_by": {
+                "value": 2,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=12095724814289427949",
+                "serpapi_link": "https://serpapi.com/search.json?cites=12095724814289427949&engine=google_scholar&hl=id",
+                "cites_id": "12095724814289427949"
+            },
+            "year": "2020"
+        },
+        {
+            "title": "VISUAL IDENTITY PERPUSTAKAAN MAWAR BLITAR SEBAGAI MEDIA INFORMASI",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:hqOjcs7Dif8C",
+            "citation_id": "3ZEzr0EAAAAJ:hqOjcs7Dif8C",
+            "authors": "YWS Warsaa, H Happy, KT Wibawa",
+            "publication": "SYNAKARYA-Jurnal Desain Komunikasi Visual 5 (1), 85-100, 2024",
+            "cited_by": {
+                "value": 1,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=12611847224512315736",
+                "serpapi_link": "https://serpapi.com/search.json?cites=12611847224512315736&engine=google_scholar&hl=id",
+                "cites_id": "12611847224512315736"
+            },
+            "year": "2024"
+        },
+        {
+            "title": "Katalog Foto Produk Fanschant Store di Kota Malang Sebagai Media Promosi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:eQOLeE2rZwMC",
+            "citation_id": "3ZEzr0EAAAAJ:eQOLeE2rZwMC",
+            "authors": "EO Verdiana, YWS Warsaa, HRD Happy",
+            "publication": "Cipta 1 (3), 349-362, 2023",
+            "cited_by": {
+                "value": 1,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=16167499481048386573",
+                "serpapi_link": "https://serpapi.com/search.json?cites=16167499481048386573&engine=google_scholar&hl=id",
+                "cites_id": "16167499481048386573"
+            },
+            "year": "2023"
+        },
+        {
+            "title": "Visual Identity Gong Production Malang sebagai Media Promosi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:W7OEmFMy1HYC",
+            "citation_id": "3ZEzr0EAAAAJ:W7OEmFMy1HYC",
+            "authors": "MW Gunawan, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 6 (02), 53-68, 2022",
+            "cited_by": {
+                "value": 1,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=8608216386562265855",
+                "serpapi_link": "https://serpapi.com/search.json?cites=8608216386562265855&engine=google_scholar&hl=id",
+                "cites_id": "8608216386562265855"
+            },
+            "year": "2022"
+        },
+        {
+            "title": "Katalog Foto Toko Djadjan Apel Malang sebagai Media Informasi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:d1gkVwhDpl0C",
+            "citation_id": "3ZEzr0EAAAAJ:d1gkVwhDpl0C",
+            "authors": "DA Saputra, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 5 (1), 36-49, 2021",
+            "cited_by": {
+                "value": 1,
+                "link": "https://scholar.google.com/scholar?oi=bibs&hl=id&cites=16463935251382064276",
+                "serpapi_link": "https://serpapi.com/search.json?cites=16463935251382064276&engine=google_scholar&hl=id",
+                "cites_id": "16463935251382064276"
+            },
+            "year": "2021"
+        },
+        {
+            "title": "MENGGALI KEDALAMAN MAKNA DALAM FOTO ESAI: MENAFSIRKAN TANDA, MENGHIDUPKAN CERITA VISUAL TANPA KATA",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:MXK_kJrjxJIC",
+            "citation_id": "3ZEzr0EAAAAJ:MXK_kJrjxJIC",
+            "authors": "HRD Happy, YWS Warsaa, EO Verdiana",
+            "publication": "specta 9 (1), 2025",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2025"
+        },
+        {
+            "title": "Introduction to Indonesia and Philippines Culture through Ecoprint: Utilization of Natural Materials for Environmental Sustainability in Kasri Village, Malang, Indonesia",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:0EnyYjriUFMC",
+            "citation_id": "3ZEzr0EAAAAJ:0EnyYjriUFMC",
+            "authors": "J Dura, F Cahyaningtyas, AN Yogatama, M Bukhori, R Hanif, NL Aqromi, ...",
+            "publication": "International Journal of Community Care of Humanity (IJCCH) 2 (11), 2024",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2024"
+        },
+        {
+            "title": "Merchandise Djampie Oesodo Sebagai Brand Awarness Konsumen",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:Se3iqnhoufwC",
+            "citation_id": "3ZEzr0EAAAAJ:Se3iqnhoufwC",
+            "authors": "AN Hanafi, HRD Happy, F Hendrawan",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 8 (01), 51-60, 2024",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2024"
+        },
+        {
+            "title": "Visual Recontextualization Maintains Narrative Integrity Amidst Visual Change in Photo Essay Works: Rekontekstualisasi Visual Memertahankan Integritas Naratif Di Tengah …",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:5nxA0vEk-isC",
+            "citation_id": "3ZEzr0EAAAAJ:5nxA0vEk-isC",
+            "authors": "HRD Happy, YWS Warsaa, EO Verdiana",
+            "publication": "Santhet (Jurnal Sejarah Pendidikan Dan Humaniora) 8 (2), 2858-2869, 2024",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2024"
+        },
+        {
+            "title": "VCD: Journal of Visual Communication Design",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:ufrVoPGSRksC",
+            "citation_id": "3ZEzr0EAAAAJ:ufrVoPGSRksC",
+            "authors": "I Gunawan, EO Verdiana, CW Utomo, M Wardaya, JJ Eliezer, LR Hidayah, ...",
+            "publication": "VCD Universitas Ciputra Surabaya, 2023",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2023"
+        },
+        {
+            "title": "Visual Identity for Gong Production Malang",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:WF5omc3nYNoC",
+            "citation_id": "3ZEzr0EAAAAJ:WF5omc3nYNoC",
+            "authors": "MW Gunawan, HRD Happy",
+            "publication": "VCD 8 (1), 90-113, 2023",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2023"
+        },
+        {
+            "title": "Synesthesia and the Experience of the Art of Photography",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:YsMSGLbcyi4C",
+            "citation_id": "3ZEzr0EAAAAJ:YsMSGLbcyi4C",
+            "authors": "MR Latuny, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 7 (01), 45-54, 2023",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2023"
+        },
+        {
+            "title": "“Massa’an Jhuko’Se Sae Khas Situbendeh” Katalog Fotografi Essai Makanan Khas Situbondo Sebagai Media Informasi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:zYLM7Y9cAGgC",
+            "citation_id": "3ZEzr0EAAAAJ:zYLM7Y9cAGgC",
+            "authors": "LL Yanuarta, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 6 (01), 76-91, 2022",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2022"
+        },
+        {
+            "title": "Brand Identity Produk Owa Outdoor Di Wilayah Malang Raya Sebagai Media Promosi",
+            "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=3ZEzr0EAAAAJ&citation_for_view=3ZEzr0EAAAAJ:IjCSPb-OGe4C",
+            "citation_id": "3ZEzr0EAAAAJ:IjCSPb-OGe4C",
+            "authors": "RS Putra, HRD Happy",
+            "publication": "Jurnal Desain Komunikasi Visual Asia 5 (2), 62-78, 2021",
+            "cited_by": {
+                "value": null
+            },
+            "year": "2021"
+        }
+    ],
+    "cited_by": {
+        "table": [
+            {
+                "kutipan": {
+                    "all": 31,
+                    "sejak_2020": 28
+                }
+            },
+            {
+                "indeks_h": {
+                    "all": 3,
+                    "sejak_2020": 3
+                }
+            },
+            {
+                "indeks_i10": {
+                    "all": 1,
+                    "sejak_2020": 0
+                }
+            }
+        ],
+        "graph": [
+            {
+                "year": 2018,
+                "citations": 2
+            },
+            {
+                "year": 2019,
+                "citations": 1
+            },
+            {
+                "year": 2021,
+                "citations": 3
+            },
+            {
+                "year": 2022,
+                "citations": 5
+            },
+            {
+                "year": 2023,
+                "citations": 6
+            },
+            {
+                "year": 2024,
+                "citations": 10
+            },
+            {
+                "year": 2025,
+                "citations": 4
+            }
+        ]
+    },
+    "co_authors": [
+        {
+            "name": "elfa verdiana",
+            "link": "https://scholar.google.com/citations?user=TJnDMy0AAAAJ&hl=id",
+            "serpapi_link": "https://serpapi.com/search.json?author_id=TJnDMy0AAAAJ&engine=google_scholar_author&hl=id",
+            "author_id": "TJnDMy0AAAAJ",
+            "email": "Email yang diverifikasi di asia.ac.id",
+            "thumbnail": "https://scholar.google.com/citations/images/avatar_scholar_56.png"
+        },
+        {
+            "name": "Yogi Widya Saka Warsaa",
+            "link": "https://scholar.google.com/citations?user=_7uXJTQAAAAJ&hl=id",
+            "serpapi_link": "https://serpapi.com/search.json?author_id=_7uXJTQAAAAJ&engine=google_scholar_author&hl=id",
+            "author_id": "_7uXJTQAAAAJ",
+            "affiliations": "Dosen Prodi DKV Institut Teknologi dan Bisnis Asia Malang",
+            "email": "Email yang diverifikasi di asia.ac.id",
+            "thumbnail": "https://scholar.googleusercontent.com/citations?view_op=small_photo&user=_7uXJTQAAAAJ&citpid=2"
+        }
+    ],
+    "serpapi_pagination": {
+        "next": "https://serpapi.com/search.json?author_id=3ZEzr0EAAAAJ&engine=google_scholar_author&hl=id&start=20"
+    }
+}

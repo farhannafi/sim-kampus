@@ -1,0 +1,273 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="{% url 'leaderboard' %}" class="btn btn-light shadow-sm fw-bold text-primary border rounded-pill px-4">
+        <i class="fa-solid fa-arrow-left me-2"></i> Kembali ke Peringkat
+    </a>
+</div>
+
+<style>
+    /* 1. Card Profil Gelap */
+    .card-profile-dark {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* 2. Dekorasi Lingkaran */
+    .circle-deco { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); pointer-events: none; }
+    .c1 { width: 250px; height: 250px; top: -80px; left: -80px; }
+    .c2 { width: 150px; height: 150px; bottom: 20px; right: 20px; }
+
+    /* 3. CSS Radial Bar Chart */
+    .radial-chart-container { position: relative; width: 160px; height: 160px; }
+    .radial-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    .radial-progress { width: 100%; height: 100%; }
+    
+    /* Background Ring Transparan */
+    .radial-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 10; } 
+    
+    /* Progress Bar Animasi */
+    .radial-bar { fill: none; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; animation: fillProgress 2s ease-out forwards; }
+    .sitasi-bar { stroke: url(#gradientSitasi); }
+    .publikasi-bar { stroke: url(#gradientPublikasi); }
+
+    @keyframes fillProgress { to { stroke-dashoffset: var(--target-offset); } }
+    svg { overflow: visible; }
+    
+    .fw-extrabold { font-weight: 800; }
+    .text-white-50 { color: rgba(255, 255, 255, 0.5) !important; }
+    .hover-primary:hover { color: #0d6efd !important; text-decoration: underline !important; }
+    @media (min-width: 768px) { .border-end-md { border-right: 1px solid rgba(255,255,255,0.1) !important; } }
+</style>
+
+<svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+  <linearGradient id="gradientSitasi" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0%" stop-color="#4F46E5" />
+    <stop offset="100%" stop-color="#A855F7" />
+  </linearGradient>
+  <linearGradient id="gradientPublikasi" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0%" stop-color="#EAB308" />
+    <stop offset="100%" stop-color="#22C55E" />
+  </linearGradient>
+</svg>
+
+<div class="row g-4">
+    
+    <div class="col-lg-12">
+        <div class="card card-profile-dark border-0">
+            <div class="circle-deco c1"></div>
+            <div class="circle-deco c2"></div>
+
+            <div class="card-body p-4 p-lg-5 position-relative z-1">
+                <div class="row align-items-center justify-content-between">
+                    
+                    <div class="col-md-5 text-center text-md-start border-end-md mb-5 mb-md-0" style="border-color: rgba(255,255,255,0.1);">
+                        <div class="d-flex flex-column flex-md-row align-items-center">
+                            
+                            {% if profile.foto_url %}
+                                <img src="{{ profile.foto_url }}" class="rounded-circle shadow-lg border border-white border-opacity-25 p-1 mb-3 mb-md-0 me-md-4" style="width:120px; height:120px; object-fit: cover; background: rgba(255,255,255,0.1);">
+                            {% else %}
+                                <div class="rounded-circle bg-white bg-opacity-10 d-flex align-items-center justify-content-center shadow-lg border border-white border-opacity-25 p-1 mb-3 mb-md-0 me-md-4 fw-bold text-white display-4" style="width:120px; height:120px;">
+                                    {{ profile.nama|slice:":1" }}
+                                </div>
+                            {% endif %}
+                            
+                            <div>
+                                <h2 class="fw-bold text-white mb-1">{{ profile.nama }}</h2>
+                                <p class="text-white-50 mb-2">{{ profile.afiliasi }}</p>
+                                
+                                <span class="badge bg-white bg-opacity-10 text-white border border-white border-opacity-25 px-3 py-2 rounded-pill text-wrap text-start shadow-sm">
+                                    {{ profile.bidang_minat|default:"-" }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-3 border-top border-white border-opacity-10">
+                            <div class="small text-white-50 mb-1 fw-semibold">
+                                <i class="fa-solid fa-envelope me-2 text-info"></i> {{ profile.email|default:"-" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row text-center justify-content-center g-4">
+                            
+                            <div class="col-6 col-sm-5">
+                                <div class="radial-chart-container mx-auto">
+                                    <svg class="radial-progress" viewBox="0 0 100 100">
+                                        <circle class="radial-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="radial-bar sitasi-bar" cx="50" cy="50" r="45" transform="rotate(-90 50 50)"></circle>
+                                    </svg>
+                                    <div class="radial-text">
+                                        <small class="text-uppercase fw-bold text-white-50 mb-1 d-block">Total</small>
+                                        <h2 class="fw-extrabold m-0 text-white" id="valSitasiText">0</h2>
+                                        <small class="text-white-50 fw-bold" style="font-size: 10px;">SITASI</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-6 col-sm-5">
+                                <div class="radial-chart-container mx-auto">
+                                    <svg class="radial-progress" viewBox="0 0 100 100">
+                                        <circle class="radial-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="radial-bar publikasi-bar" cx="50" cy="50" r="45" transform="rotate(-90 50 50)"></circle>
+                                    </svg>
+                                    <div class="radial-text">
+                                        <small class="text-uppercase fw-bold text-white-50 mb-1 d-block">Total</small>
+                                        <h2 class="fw-extrabold m-0 text-white" id="valPublikasiText">0</h2>
+                                        <small class="text-white-50 fw-bold" style="font-size: 10px;">JURNAL</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="card-header bg-white py-4 px-4 border-0 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold m-0 text-dark">
+                        <i class="fa-solid fa-list-check me-2 text-primary"></i>Daftar Seluruh Publikasi
+                    </h5>
+                    <span class="badge bg-light text-secondary rounded-pill px-3 border fw-bold shadow-sm">
+                        {{ total_pub }} Data Ditemukan
+                    </span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-secondary">
+                            <tr>
+                                <th class="ps-4 py-3 text-uppercase small fw-bold">Judul Penelitian</th>
+                                <th class="text-uppercase small fw-bold">Pengarang</th>
+                                <th class="text-center text-uppercase small fw-bold">Sitasi</th>
+                                <th class="text-center text-uppercase small fw-bold">Tahun</th>
+                                <th class="pe-4 text-uppercase small fw-bold">Nama Jurnal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pub in publications %}
+                            <tr>
+                                <td class="ps-4 fw-semibold py-3" style="width: 40%;">
+                                    {% if pub.link_jurnal %}
+                                        <a href="{{ pub.link_jurnal }}" target="_blank" class="text-decoration-none text-dark hover-primary">
+                                            {{ pub.judul }}
+                                        </a>
+                                    {% else %}
+                                        {{ pub.judul }}
+                                    {% endif %}
+                                </td>
+                                
+                                <td class="small text-muted" style="width: 25%;">{{ pub.authors|truncatechars:50 }}</td>
+                                
+                                <!-- <td class="text-center">
+                                    {% if pub.jumlah_sitasi > 0 %}
+                                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 shadow-sm fw-bold">
+                                            {{ pub.jumlah_sitasi }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted small">-</span>
+                                    {% endif %}
+                                </td> -->
+                                <td class="text-center">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 shadow-sm fw-bold">
+                                        {% if pub.jumlah_sitasi == "-" or pub.jumlah_sitasi == "" %}
+                                            0
+                                        {% else %}
+                                            {{ pub.jumlah_sitasi }}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                
+                                <td class="text-center fw-bold text-dark">{{ pub.tahun }}</td>
+                                
+                                <td class="pe-4 small fst-italic text-muted">
+                                    {{ pub.nama_jurnal|default:"-"|truncatechars:40 }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="text-center py-5 text-muted">Belum ada data publikasi di database.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 1. Ambil Nilai Data (Konversi ke Number biar aman)
+    const valSitasi = Number("{{ total_cit|default:0 }}");
+    const valPublikasi = Number("{{ total_pub|default:0 }}");
+
+    // 2. Fungsi Helper: Animasi Angka Berjalan (Counter Up)
+    function animateValue(id, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentVal = Math.floor(progress * (end - start) + start);
+            
+            // Update Angka di HTML
+            const el = document.getElementById(id);
+            if(el) { el.innerText = currentVal.toLocaleString('id-ID'); }
+            
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // 3. Fungsi Helper: Hitung Lingkaran Grafik
+    function setRadialProgress(className, value, maxValue) {
+        // Tentukan Max Value Dinamis (Supaya grafik gak penuh terus)
+        // Kalau sitasi > 2000, max-nya jadi sitasi itu sendiri + 10%
+        let dynamicMax = maxValue;
+        if(value > maxValue) dynamicMax = value * 1.1;
+
+        let percent = (value / dynamicMax) * 100;
+        
+        // Trik Visual: Minimal 10% biar kelihatan dikit, Maksimal 100%
+        if (value > 0 && percent < 10) { percent = 10; }
+        if (percent > 100) { percent = 100; }
+
+        // Hitung offset (283 adalah keliling lingkaran radius 45)
+        const offset = 283 - (283 * percent / 100);
+        
+        // Set ke CSS variable
+        const bar = document.querySelector(`.${className}`);
+        if(bar) {
+            bar.style.setProperty('--target-offset', offset);
+        }
+    }
+
+    // --- JALANKAN SAAT HALAMAN SELESAI DIMUAT ---
+    document.addEventListener("DOMContentLoaded", () => {
+        // Jalankan Animasi Angka
+        animateValue("valSitasiText", 0, valSitasi, 2000);
+        animateValue("valPublikasiText", 0, valPublikasi, 2000);
+
+        // Jalankan Animasi Grafik
+        // Sitasi max default 2000, Publikasi max default 50 (bisa disesuaikan)
+        setRadialProgress('sitasi-bar', valSitasi, 2000); 
+        setRadialProgress('publikasi-bar', valPublikasi, 50);
+    });
+</script>
+
+{% endblock %}

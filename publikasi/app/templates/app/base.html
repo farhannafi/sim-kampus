@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistem Monitoring Publikasi</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #f3f4f6; overflow-x: hidden; }
+    
+    /* === SIDEBAR STYLE === */
+    #wrapper { display: flex; width: 100%; transition: 0.3s; }
+    #sidebar-wrapper {
+        min-height: 100vh;
+        width: 260px;
+        margin-left: -260px;
+        background: #1e293b; /* Dark Blue */
+        color: #fff;
+        transition: margin 0.3s;
+        position: fixed;
+        z-index: 1000;
+    }
+    #sidebar-wrapper .sidebar-heading { padding: 1.5rem; font-size: 1.2rem; font-weight: bold; background: #0f172a; color: #fff; }
+    
+    /* MENU ITEM */
+    .list-group-item { border: none; padding: 15px 25px; background: transparent; color: #cbd5e1; font-weight: 500; }
+    .list-group-item:hover, .list-group-item.active { background: #334155; color: #fff; border-left: 4px solid #3b82f6; }
+    .list-group-item i { width: 25px; }
+
+    /* === CONTENT STYLE === */
+    #page-content-wrapper { width: 100%; margin-left: 0; transition: 0.3s; }
+    #wrapper.toggled #sidebar-wrapper { margin-left: 0; }
+    #wrapper.toggled #page-content-wrapper { margin-left: 260px; }
+
+    /* === NAVBAR STYLE === */
+    .navbar-custom { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 10px 20px; }
+    .btn-hamburger { font-size: 1.5rem; color: #333; cursor: pointer; border: none; background: none; }
+    .navbar-text-institut { margin-right: 20px; font-weight: 600; color: #64748b; }
+
+    /* === USER PROFILE BUTTON (NAVBAR) === */
+    .btn-user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: transparent;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    /* === USER PROFILE BUTTON (NAVBAR) === */
+    .btn-user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px; /* Jarak ikon ke panah */
+        background: transparent;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    /* Ikon Kepala Manusia (Lingkaran) */
+    .user-avatar-box {
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        background: #e2e8f0; 
+        color: #1e293b;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem;
+        transition: 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    /* Ikon Panah (DIPERBESAR & LEBIH TEBAL) */
+    .arrow-indicator {
+        font-size: 1.2rem; /* Ukuran diperbesar dari 0.9rem */
+        color: #64748b;
+        transition: transform 0.3s ease; 
+        font-weight: bold; /* Lebih tebal */
+    }
+
+    /* EFEK SAAT DIKLIK */
+    .btn-user-profile.show .user-avatar-box {
+        background: #cbd5e1; 
+        border-color: #94a3b8;
+    }
+    
+    .btn-user-profile.show .arrow-indicator {
+        transform: rotate(90deg); 
+        color: #3b82f6; 
+    }
+
+    /* Dropdown Menu (Lebih Ramping) */
+    .dropdown-menu-end { 
+        right: 0; left: auto; 
+        border-radius: 12px; 
+        border: none; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+        margin-top: 10px !important; 
+        min-width: 150px; /* Lebar dikecilkan karena cuma ada tombol logout */
+        padding: 5px !important;
+    }
+
+    /* === LOADING OVERLAY === */
+    #loading-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255, 255, 255, 0.9); z-index: 9999;
+        display: none; justify-content: center; align-items: center; flex-direction: column;
+    }
+
+    .full-width-content { margin-left: 0 !important; width: 100% !important; }
+
+    @media (max-width: 768px) {
+        #wrapper.toggled #page-content-wrapper { margin-left: 0; opacity: 0.5; pointer-events: none; }
+        .navbar-text-institut { display: none; } 
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-overlay">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+      <h5 class="mt-3">Memproses Data...</h5>
+  </div>
+
+  <div class="d-flex" id="wrapper">
+    
+    {% if user.is_authenticated %}
+    <div id="sidebar-wrapper">
+        <div class="sidebar-heading text-center">
+            <i class="fa-solid fa-graduation-cap me-2"></i> SIM-KAMPUS
+        </div>
+        <div class="list-group list-group-flush mt-3">
+            <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="{% url 'data_dosen' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'data_dosen' %}active{% endif %}">
+                <i class="fa-solid fa-magnifying-glass"></i> Cari Data Dosen
+            </a>
+            <a href="{% url 'leaderboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'leaderboard' %}active{% endif %}">
+                <i class="fa-solid fa-trophy"></i> Peringkat Dosen
+            </a>
+            <a href="{% url 'kelola_dosen' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'kelola_dosen' %}active{% endif %}">
+                <i class="fa-solid fa-users-gear"></i> Kelola Data Dosen
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div id="page-content-wrapper" class="{% if not user.is_authenticated %}full-width-content{% endif %}">
+    
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid d-flex align-items-center">
+            <button class="btn-hamburger" id="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="ms-auto d-flex align-items-center">
+                <span class="navbar-text-institut d-none d-md-block">
+                    Institut Teknologi Asia Malang
+                </span>
+
+                <div class="dropdown">
+                    <a href="#" class="btn-user-profile dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar-box">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow-indicator"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end p-2 animate-up" aria-labelledby="userDropdown">
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 py-2">
+                                    <i class="fa-solid fa-right-from-bracket"></i> LOGOUT
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+        </div>
+    </nav>
+    {% endif %}
+    
+    <div class="container-fluid p-4">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <script>
+    var wrapper = document.getElementById("wrapper");
+    var toggleButton = document.getElementById("menu-toggle");
+
+    if (toggleButton) {
+        toggleButton.onclick = function () {
+            wrapper.classList.toggle("toggled");
+        };
+    }
+
+    if (window.innerWidth > 768 && wrapper && document.getElementById("sidebar-wrapper")) {
+        wrapper.classList.add("toggled");
+    }
+
+    function showLoading() { 
+        document.getElementById('loading-overlay').style.display = 'flex'; 
+    }
+    
+    function handleDownload(url) {
+        showLoading();
+        location.href = url;
+        setTimeout(function() { document.getElementById('loading-overlay').style.display = 'none'; }, 3000);
+    }
+
+    // FIX Back Button Loading
+    window.addEventListener('pageshow', function(event) {
+        var overlay = document.getElementById('loading-overlay');
+        if (overlay) { overlay.style.display = 'none'; }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+DELETE FROM app_dosencache WHERE nama LIKE '%FATHORRAHMAN%';

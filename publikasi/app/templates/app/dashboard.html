@@ -1,0 +1,209 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<style>
+    /* Gradient Banner */
+    .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Dekorasi Lingkaran di Banner */
+    .circle-deco {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+    }
+    .c1 { width: 200px; height: 200px; top: -50px; right: -50px; }
+    .c2 { width: 100px; height: 100px; bottom: 20px; right: 80px; }
+
+    /* Card Styling */
+    .stat-card {
+        border: none;
+        border-radius: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #fff;
+    }
+    .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Aksen Warna Border */
+    .border-blue { border-left: 5px solid #3b82f6; }
+    .border-purple { border-left: 5px solid #8b5cf6; }
+    .border-teal { border-left: 5px solid #14b8a6; }
+    .border-orange { border-left: 5px solid #f59e0b; }
+
+    /* Jam Digital */
+    .clock-container {
+        font-family: 'Courier New', Courier, monospace; /* Font ala digital */
+        background: rgba(0,0,0,0.3);
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+</style>
+
+<div class="card hero-banner shadow-lg mb-5 border-0 p-4 p-md-5">
+    <div class="circle-deco c1"></div>
+    <div class="circle-deco c2"></div>
+
+    <div class="row align-items-center position-relative z-1">
+        <div class="col-lg-8">
+            <h1 class="fw-bold mb-2">👋 Selamat Datang, Di SIM-KAMPUS</h1>
+            <p class="text-white-50 fs-5 mb-0">Sistem Monitoring Publikasi Institut Teknologi Asia Malang</p>
+            <div class="mt-4">
+                <span class="badge bg-primary bg-opacity-25 border border-primary text-white px-3 py-2 rounded-pill">
+                    <i class="fa-solid fa-server me-2"></i> Sistem Online
+                </span>
+                <span class="badge bg-success bg-opacity-25 border border-success text-white px-3 py-2 rounded-pill ms-2">
+                    <i class="fa-solid fa-database me-2"></i> Database Connected
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
+            <div class="clock-container text-center">
+                <div class="small text-white-50 mb-1 fw-bold tracking-wide"></div>
+                <h1 class="m-0 fw-bold display-4" id="digital-clock">00:00:00</h1>
+                <small class="text-white-50" id="current-date">Senin, 1 Jan 2025</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm h-100 border-blue">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h6 class="text-muted fw-bold text-uppercase small">Jumlah Fakultas</h6>
+                        <h2 class="fw-bold text-dark m-0">{{ fakultas }}</h2>
+                    </div>
+                    <div class="icon-box bg-blue-subtle text-primary rounded-3 p-2">
+                        <i class="fa-solid fa-building-columns fa-lg"></i>
+                    </div>
+                </div>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="chartFakultas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm h-100 border-purple">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h6 class="text-muted fw-bold text-uppercase small">Jumlah Prodi</h6>
+                        <h2 class="fw-bold text-dark m-0">{{ prodi }}</h2>
+                    </div>
+                    <div class="icon-box bg-purple-subtle text-purple rounded-3 p-2">
+                        <i class="fa-solid fa-layer-group fa-lg" style="color: #8b5cf6;"></i>
+                    </div>
+                </div>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="chartProdi"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm h-100 border-teal">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h6 class="text-muted fw-bold text-uppercase small">Dosen FTD</h6>
+                        <h2 class="fw-bold text-dark m-0">{{ dosen_ftd }}</h2>
+                    </div>
+                    <div class="icon-box bg-teal-subtle text-teal rounded-3 p-2">
+                        <i class="fa-solid fa-laptop-code fa-lg" style="color: #14b8a6;"></i>
+                    </div>
+                </div>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="chartFTD"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm h-100 border-orange">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h6 class="text-muted fw-bold text-uppercase small">Dosen FEB</h6>
+                        <h2 class="fw-bold text-dark m-0">{{ dosen_feb }}</h2>
+                    </div>
+                    <div class="icon-box bg-orange-subtle text-orange rounded-3 p-2">
+                        <i class="fa-solid fa-chart-line fa-lg" style="color: #f59e0b;"></i>
+                    </div>
+                </div>
+                <div style="height: 100px; position: relative;">
+                    <canvas id="chartFEB"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. JAM DIGITAL & TANGGAL
+    function updateClock() {
+        const now = new Date();
+        
+        // Jam
+        const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        document.getElementById('digital-clock').innerText = timeString;
+
+        // Tanggal
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = now.toLocaleDateString('id-ID', options);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. CHART CONFIGURATION
+    // Fungsi bikin chart setengah lingkaran (Gauge Style) atau Donut
+    function createMiniChart(id, color) {
+        const ctx = document.getElementById(id).getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Data', 'Empty'],
+                datasets: [{
+                    data: [75, 25], // Dummy data visual
+                    backgroundColor: [color, '#f1f5f9'],
+                    borderWidth: 0,
+                    borderRadius: 10,
+                    cutout: '85%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                animation: { animateScale: true, animateRotate: true },
+                circumference: 180, // Setengah lingkaran (seperti Speedometer)
+                rotation: 270
+            }
+        });
+    }
+
+    // Render Charts dengan Warna yang Sesuai
+    createMiniChart('chartFakultas', '#3b82f6'); // Biru
+    createMiniChart('chartProdi', '#8b5cf6');    // Ungu
+    createMiniChart('chartFTD', '#14b8a6');      // Teal
+    createMiniChart('chartFEB', '#f59e0b');      // Orange
+</script>
+
+{% endblock %}
