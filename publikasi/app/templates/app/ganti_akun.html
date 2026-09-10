@@ -1,0 +1,145 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+<style>
+    /* 1. BACKGROUND HALAMAN GELAP SINKRON (Sama seperti halaman login) */
+    body {
+        background-color: #0f172a !important;
+        background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%) !important;
+    }
+
+    /* 2. CONTAINER PAS DI TENGAH */
+    .ganti-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 3. KARTU TAMPILAN */
+    .card-ganti {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        width: 100%;
+        max-width: 450px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* INPUT FORM GELAP */
+    .form-control-dark {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px 15px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+    }
+    .form-control-dark:focus {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: #3b82f6;
+        box-shadow: none;
+    }
+    .form-control-dark::placeholder { color: #94a3b8; }
+
+    /* TOMBOL AKSI AGAR SEJAJAR DAN SIMETRIS */
+    .btn-action {
+        padding: 12px;
+        font-weight: 600;
+        border-radius: 10px;
+        flex: 1; /* Membuat lebar kedua tombol sama persis */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    .btn-simpan {
+        background: #3b82f6;
+        border: none;
+        color: white;
+    }
+    .btn-simpan:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+    }
+    .btn-batal {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+    }
+    .btn-batal:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+</style>
+
+<div class="ganti-container">
+    <div class="card card-ganti p-4">
+        
+        <div class="text-center mb-4">
+            <div class="bg-warning bg-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                <i class="fa-solid fa-user-gear fa-2x text-warning"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Ganti Username & Password</h3>
+            <p class="text-white-50 small">Perbarui data kredensial akses admin Anda.</p>
+        </div>
+        
+        <div class="card-body p-0">
+            <form method="POST">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger bg-danger bg-opacity-25 text-white border-0 py-2 small mb-3">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-white-50 text-uppercase mb-1">Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-white-50 text-uppercase mb-1">Password Baru</label>
+                    {{ form.password_baru1 }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-white-50 text-uppercase mb-1">Konfirmasi Password Baru</label>
+                    {{ form.password_baru2 }}
+                    <small class="text-white-50 d-block mt-1" style="font-size: 0.75rem;">*Kosongkan bagian password jika hanya ingin mengganti username.</small>
+                </div>
+
+                <!-- TOMBOL AKSI (DISESUAIKAN AGAR SIMETRIS & DI TENGAH) -->
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-action btn-simpan shadow-sm">
+                        <i class="fa-solid fa-save me-2"></i> Simpan
+                    </button>
+                    <a href="{% url 'dashboard' %}" class="btn-action btn-batal">
+                        Batal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Memastikan input Django otomatis mendapatkan class form-control-dark agar warnanya selaras
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll("input[type='text'], input[type='password']");
+        inputs.forEach(input => {
+            input.classList.add("form-control-dark");
+        });
+    });
+</script>
+{% endblock %}

@@ -36,4 +36,9 @@ urlpatterns = [
     path("download-all/", views.download_all_excel, name="download_all"),
     # TAMBAHKAN BARIS INI:
     path("cancel-update/", views.cancel_update_view, name="cancel_update"),
+
+    # URL BARU: GANTI PASSWORD / AKUN
+    path("ganti-password/", views.ganti_password_view, name="ganti_password"),
+    # 👇 PASTIKAN BARIS INI ADA DI URLS.PY KAMU 👇
+    path("ganti-akun/", views.ganti_akun_view, name="ganti_akun"),
 ]

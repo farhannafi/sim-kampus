@@ -176,7 +176,23 @@
                         <i class="fa-solid fa-chevron-right arrow-indicator"></i>
                     </a>
 
-                    <ul class="dropdown-menu dropdown-menu-end p-2 animate-up" aria-labelledby="userDropdown">
+                    <!-- <ul class="dropdown-menu dropdown-menu-end p-2 animate-up" aria-labelledby="userDropdown">
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 py-2">
+                                    <i class="fa-solid fa-right-from-bracket"></i> LOGOUT
+                                </button>
+                            </form>
+                        </li>
+                    </ul> -->
+                        <ul class="dropdown-menu dropdown-menu-end p-2 animate-up" aria-labelledby="userDropdown">
+                        <!-- TOMBOL GANTI AKUN DI ATAS LOGOUT -->
+                         <li>
+                            <a href="{% url 'ganti_akun' %}" class="dropdown-item fw-bold text-dark rounded-2 py-2 d-flex align-items-center gap-2 mb-1" style="font-size: 0.9rem;">
+                                <i class="fa-solid fa-key text-warning"></i> Ganti Password
+                            </a>
+                        </li>
                         <li>
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}

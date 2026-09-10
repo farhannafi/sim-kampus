@@ -13,6 +13,9 @@ from django.db.models import Count
 from .forms import DosenForm 
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from .forms import GantiAkunForm  # Pastikan form ini sudah ada di forms.py
 
 # IMPORT MODEL RELASIONAL (Pastikan models.py sudah ada kolom sejak_2020)
 from .models import Dosen, Publikasi, StatistikSitasi
@@ -501,3 +504,50 @@ def edit_dosen_view(request, author_id):
         form = DosenForm(instance=dosen_lama)
 
     return render(request, "app/edit_dosen.html", {'form': form, 'dosen': dosen_lama})
+
+@login_required(login_url='login')
+def ganti_password_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Mencegah user ter-logout otomatis setelah ganti password
+            update_session_auth_hash(request, user)
+            messages.success(request, "Password berhasil diperbarui!")
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Silakan perbaiki kesalahan di bawah.")
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'app/ganti_password.html', {'form': form})
+
+@login_required(login_url='login')
+def ganti_akun_view(request):
+    if request.method == 'POST':
+        form = GantiAkunForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            new_username = form.cleaned_data.get('username')
+            
+            # Cek jika username sudah dipakai akun lain
+            from django.contrib.auth.models import User
+            if User.objects.filter(username=new_username).exclude(pk=request.user.pk).exists():
+                messages.error(request, "Username tersebut sudah digunakan akun lain!")
+                return redirect('ganti_akun')
+
+            user.username = new_username
+            
+            # Jika password baru diisi, perbarui passwordnya
+            p1 = form.cleaned_data.get('password_baru1')
+            if p1:
+                user.set_password(p1)
+                update_session_auth_hash(request, user) # Mencegah user ter-logout otomatis
+                
+            user.save()
+            messages.success(request, "Akun (Username/Password) berhasil diperbarui!")
+            return redirect('dashboard')
+    else:
+        form = GantiAkunForm(instance=request.user)
+
+    return render(request, 'app/ganti_akun.html', {'form': form})
