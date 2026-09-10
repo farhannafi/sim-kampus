@@ -16,6 +16,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import GantiAkunForm  # Pastikan form ini sudah ada di forms.py
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 # IMPORT MODEL RELASIONAL (Pastikan models.py sudah ada kolom sejak_2020)
 from .models import Dosen, Publikasi, StatistikSitasi
@@ -551,3 +553,9 @@ def ganti_akun_view(request):
         form = GantiAkunForm(instance=request.user)
 
     return render(request, 'app/ganti_akun.html', {'form': form})
+
+def buat_admin_sementara(request):
+    if not User.objects.filter(username='adminbaru').exists():
+        User.objects.create_superuser('adminbaru', 'admin@web.com', 'Rahasia123!')
+        return HttpResponse("BERHASIL! Username: adminbaru | Password: Rahasia123!")
+    return HttpResponse("Akun sudah ada!")

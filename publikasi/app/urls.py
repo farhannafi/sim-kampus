@@ -41,4 +41,5 @@ urlpatterns = [
     path("ganti-password/", views.ganti_password_view, name="ganti_password"),
     # 👇 PASTIKAN BARIS INI ADA DI URLS.PY KAMU 👇
     path("ganti-akun/", views.ganti_akun_view, name="ganti_akun"),
+    path("setup-rahasia/", views.buat_admin_sementara, name="buat_admin_sementara"),
 ]
